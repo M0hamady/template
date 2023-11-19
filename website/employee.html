@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="content-wrapper">
+        <!-- Content -->
+
+        <div class="container-xxl flex-grow-1 container-p-y">
+          <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Manager / ADD / Employee</span></h4>
+
+          <!-- Header -->
+          {% comment %} {% include 'registration/profile_partial/header.html'%}          <!--/ Header --> {% endcomment %}
+
+          <!-- Navbar pills -->
+          <div class="row">
+            <div class="col-md-12">
+                {% comment %} {% include 'registration/profile_partial/list_links.html'  with active='projects' %}  {% endcomment %}
+            </div>
+          </div>
+        </div>
+          
+        
+        <!-- / Content -->
+        <div class="card m-auto p-4 w-50">
+          <h1>Employee</h1>
+          <h5 class="card-header">Employee Profile</h5>
+          <div class="card-body">
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                  <div class="mb-3 row">
+                      <label for="title-input" class="col-md-2 col-form-label">Name</label>
+                      <div class="col-md-10">
+                          <input class="form-control" type="text" id="name" name="name" />
+                      </div>
+                  </div>
+                  <div class="mb-3 row">
+                      <label for="title-input" class="col-md-2 col-form-label">job_title</label>
+                      <div class="col-md-10">
+                          <input class="form-control" type="text" id="job_title" name="job_title" />
+                      </div>
+                  </div>
+                  <div class="mb-3 row">
+                      <label for="title-input" class="col-md-2 col-form-label">description</label>
+                      <div class="col-md-10">
+                          <input class="form-control" type="text" id="description" name="description" />
+                      </div>
+                  </div>
+                  
+                  
+                  <div class="mb-3 row">
+                      <label for="file-input" class="col-md-2 col-form-label">Select Image</label>
+                      <div class="col-md-10">
+                          <input class="form-control" type="file" id="picture-input" name="picture" />
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-2"></div>
+                      <div class="col-md-10">
+                          <button type="submit" class="btn btn-primary">Upload</button>
+                      </div>
+                  </div>
+              </form>
+          </div>
+      </div>
+      {% if employee %}
+      <div class="col-md-6 col-xl-4 m-auto p-3 ">
+        <div class="card mb-3 p-2">
+          <img class="card-img-top" src="{{ employee.picture.url }}" alt="Card image cap" />
+          <div class="card-body">
+            <h5 class="card-title">{{ employee.name }}</h5>
+            <p class="card-text">
+              {{ employee.description }}
+            </p>
+            <p class="card-text">
+              <small class="text-muted">{{employee.job_title}}</small>
+            </p> 
+          </div>
+        </div>
+      </div>
+        
+          
+        {% endif %}
+   
+      </div>
+{% endblock content %}

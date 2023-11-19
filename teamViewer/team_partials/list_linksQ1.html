@@ -1,0 +1,146 @@
+<ul class="nav nav-pills flex-column flex-sm-row mb-4">
+  {% if query1|lower == 'from_markting'  %}
+    <li class="nav-item">
+      <a
+       {% if query1|lower == 'from_markting'  %}
+            {% if query2|lower == 'clients' %}
+            class="nav-link active" href= javascript:void(0);      
+            {% else %}    
+            class="nav-link"  href='{% url "client_filter" 'from_markting' 'clients' %}' 
+            {% endif %}     
+      {% else %} 
+      {% endif %} 
+        >
+        <i class="ti ti-user-check me-1 ti-xs"></i> clients</a
+      >
+    </li>
+    <li class="nav-item ">
+      <a
+       {% if query1|lower == 'from_markting'  %}
+            {% if query2|lower == 'needs_actions' %}
+            class="nav-link active " href= javascript:void(0);      
+            {% else %}
+            class="nav-link"  href='{% url "client_filter" 'from_markting' 'needs_actions' %}'     
+            {% endif %}     
+      {% else %} 
+      {% endif %} 
+        >
+        <i class="ti ti-user-check me-1 ti-xs"></i> needs actions</a
+      >
+    </li>
+    <li class="nav-item">
+      <a
+       {% if query1|lower == 'from_markting'  %}
+            {% if query2|lower == 'in_process' %}
+            class="nav-link active" href= javascript:void(0);      
+            {% else %}     
+            class="nav-link"  href='{% url "client_filter" 'from_markting' 'in_process' %}'
+            {% endif %}     
+      {% else %} 
+      {% endif %} 
+        >
+        <i class="ti ti-user-check me-1 ti-xs"></i> in_process</a
+      >
+    </li>
+    {% elif query1|lower == 'meetings'  %}
+    <li class="nav-item">
+      <a
+       {% if query1|lower == 'meetings'  %}
+            {% if query2|lower == 'today' %}
+            class="nav-link active" href= javascript:void(0);      
+            {% else %}    
+            class="nav-link"  href='{% url "client_filter" 'meetings' 'today' %}' 
+            {% endif %}     
+      {% else %} 
+      {% endif %} 
+        >
+        <i class="ti ti-user-check me-1 ti-xs"></i> Today</a
+      >
+    </li>
+    <li class="nav-item ">
+      <a
+       {% if query1|lower == 'meetings'  %}
+            {% if query2|lower == 'this_week' %}
+            class="nav-link active " href= javascript:void(0);      
+            {% else %}
+            class="nav-link"  href='{% url "client_filter" 'meetings' 'this_week' %}'     
+            {% endif %}     
+      {% else %} 
+      {% endif %} 
+        >
+        <i class="ti ti-user-check me-1 ti-xs"></i> this Week</a
+      >
+    </li>
+    <li class="nav-item">
+      <a
+       {% if query1|lower == 'meetings'  %}
+            {% if query2|lower == 'upcoming' %}
+            class="nav-link active" href= javascript:void(0);      
+            {% else %}     
+            class="nav-link"  href='{% url "client_filter" 'meetings' 'upcoming' %}'
+            {% endif %}     
+      {% else %} 
+      {% endif %} 
+        >
+        <i class="ti ti-user-check me-1 ti-xs"></i> upcoming</a
+      >
+    </li>
+    {% elif query1|lower == 'tech_team'  %}
+    <li class="nav-item">
+      <a
+       {% if query1|lower == 'tech_team'  %}
+            {% if query2|lower == 'clients' %}
+            class="nav-link active" href= javascript:void(0);      
+            {% else %}    
+            class="nav-link"  href='{% url "client_filter" 'tech_team' 'clients' %}' 
+            {% endif %}     
+      {% else %} 
+      {% endif %} 
+        >
+        <i class="ti ti-user-check me-1 ti-xs"></i> clients</a
+      >
+    </li>
+    <li class="nav-item ">
+      <a
+       {% if query1|lower == 'tech_team'  %}
+            {% if query2|lower == 'needs_action' %}
+            class="nav-link active " href= javascript:void(0);      
+            {% else %}
+            class="nav-link"  href='{% url "client_filter" 'tech_team' 'needs_action' %}'     
+            {% endif %}     
+      {% else %} 
+      {% endif %} 
+        >
+        <i class="ti ti-user-check me-1 ti-xs"></i> needs_action</a
+      >
+    </li>
+    <li class="nav-item">
+      <a
+       {% if query1|lower == 'tech_team'  %}
+            {% if query2|lower == 'in_process' %}
+            class="nav-link active" href= javascript:void(0);      
+            {% else %}     
+            class="nav-link"  href='{% url "client_filter" 'tech_team' 'in_process' %}'
+            {% endif %}     
+      {% else %} 
+      {% endif %} 
+        >
+        <i class="ti ti-user-check me-1 ti-xs"></i> in_process</a
+      >
+    </li>
+    {% endif %}
+    {% comment %} <li class="nav-item">
+      <a {% if active == 'n-actions' %} class="nav-link active" href=javascript:void(0);{% else %} class="nav-link" href='{% url "client_filter" 'from_markting' 'needs_actions' %}'{% endif %}
+        ><i {% if active == 'teams' %}  class="ti ti-users me-1 ti-xs" {% else %} class="ti ti-layout-grid me-1 ti-xs"  {% endif %}></i> needs actions</a
+      >
+    </li>
+    <li class="nav-item">
+      <a  {% if active == 'n-approvment' %} class="nav-link active" href=javascript:void(0);{% else %} class="nav-link" href='{% url "meeting" %}'{% endif %} 
+        ><i class="ti ti-layout-grid me-1 ti-xs"></i> needs approvment </a>
+    </li> {% endcomment %}
+    {% comment %} <li class="nav-item">
+      <a class="nav-link" href="pages-profile-connections.html"
+        ><i class="ti ti-link me-1 ti-xs"></i> Connections</a
+      >
+    </li> {% endcomment %}
+  </ul>

@@ -1,0 +1,122 @@
+{% extends 'baseViewer.html' %}
+{% load static %}
+{% block content %}
+{% load widget_tweaks %}
+
+    <div class="content-wrapper">
+        <!-- Content -->
+
+        <div class=" flex-grow-1 container-p-y card m-4 ">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="mb-0">Basic Layout</h5>
+                <small class="text-muted float-end">{{client}}</small>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{% url 'client_update' client.uuid %}" autocomplete="off">
+                    {% csrf_token %}
+        
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Name: </label>
+                        <div class="col-sm-10">
+                            {{ form.name.errors }}
+                            {% render_field form.name class="form-control" placeholder=field.name %}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">email: </label>
+                        <div class="col-sm-10">
+                            {{ form.email.errors }}
+                            {% render_field form.email type=email class="form-control" placeholder=field.name %}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">number: </label>
+                        <div class="col-sm-10">
+                            {{ form.number.errors }}
+                            {% render_field form.number type=number class="form-control" placeholder=field.name %}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">location: </label>
+                        <div class="col-sm-10">
+                            {{ form.location.errors }}
+                            {% render_field form.location type=number class="form-control" placeholder=field.name %}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">locationLink: </label>
+                        <div class="col-sm-10">
+                            {{ form.locationLink.errors }}
+                            {% render_field form.locationLink type="text" class="form-control" placeholder=field.name %}
+                        </div>
+                    </div>
+                    <div class="form-check mt-3">
+                        {% render_field form.is_location_approved class="form-check-input" id="form.is_location_approved.label_tag" placeholder=field.name %}
+                        <label class="form-check-label" > {{ form.is_location_approved.label_tag }} </label>
+                        {{ field.errors }}
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">coming_from: </label>
+                        <div class="col-sm-10">
+                            {{ form.coming_from.errors }}
+                            {% render_field form.coming_from type=number class="form-control" placeholder=field.name %}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">meeting_time: </label>
+                        <div class="col-sm-10">
+                            {{ form.meeting_time.errors }}
+                            {% render_field form.meeting_time type="datetime-local" class="form-control" placeholder=field.name %}
+                        </div>
+                    </div>
+                    <div class="form-check mt-3">
+                        {% render_field form.is_meeting_approved class="form-check-input" id="form.is_meeting_approved.label_tag" placeholder=field.name %}
+                        <label class="form-check-label" > {{ form.is_meeting_approved.label_tag }} </label>
+                        {{ field.errors }}
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">liscence: </label>
+                        <div class="col-sm-10">
+                            <label class="col-sm-8 col-form-label">{{ client.uuid }} </label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">contract_meeting_time: </label>
+                        <div class="col-sm-10">
+                            {{ form.contract_meeting_time.errors }}
+                            {% render_field form.contract_meeting_time type="datetime-local" class="form-control" placeholder=field.name %}
+                        </div>
+                    </div>
+                    <div class="form-check mt-3">
+                        {% render_field form.is_contract_meeting_approved class="form-check-input" id="form.is_contract_meeting_approved.label_tag" placeholder=field.name %}
+                        <label class="form-check-label" > {{ form.is_contract_meeting_approved.label_tag }} </label>
+                        {{ field.errors }}
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Notes: </label>
+                        <div class="col-sm-10">
+                            {{ form.notes_for_home.errors }}
+                            {% render_field form.notes_for_home type="datetime-local" class="form-control" placeholder=field.name %}
+                        </div>
+                    </div>
+                    {% comment %} <div class="form-check mt-3">
+                        {% render_field form.is_active class="form-check-input" id="form.is_active.label_tag" placeholder=field.name %}
+                        <label class="form-check-label" > {{ form.is_active.label_tag }} </label>
+                        {{ field.errors }}
+                    </div> {% endcomment %}
+                    
+        
+                    
+        
+                    <button type="submit" class="btn btn-primary d-grid w-100 mt-2">Supmit</button>
+                </form> 
+            </div>
+          <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Viewer /</span></h4>
+                  {% comment %} end list item {% endcomment %}
+          </div>
+         
+        <!-- / Content -->
+
+   
+      </div>
+{% endblock content %}

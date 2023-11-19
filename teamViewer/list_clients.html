@@ -1,0 +1,101 @@
+{% extends 'baseViewer.html' %}
+{% load static %}
+{% block content %}
+    <div class="content-wrapper">
+        <!-- Content -->
+
+        <div class="container-xxl flex-grow-1 container-p-y">
+          <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Viewer /</span></h4>
+
+          <!-- Header -->
+          {% comment %} {% include 'registration/profile_partial/header.html'%}          <!--/ Header --> {% endcomment %}
+
+          <!-- Navbar pills -->
+          <div class="row">
+            <div class="col-md-12">
+                {% include 'teamViewer/team_partials/list_linksQ1.html'  with query1=query1 query2=query2 %} 
+            </div>
+          </div>
+        </div>
+          <div class="flex flex-wrap   justify-between col-12 " style="display: flex">
+            {% comment %} start list item {% endcomment %}
+            
+            {% comment %}  {% endcomment %}
+            {% for client in clients  %}
+            <div class="col-12 col-xl-4 mb-4 col-md-6">
+              <div class="card">
+                <div class="card-header d-flex justify-content-between pb-1">
+                  <h5 class="mb-0 card-title">{{client.name}}</h5>
+                  <div class="dropdown">
+                    <button
+                    class="btn p-0"
+                    type="button"
+                    id="totalEarning"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    >
+                    <i class="ti ti-dots-vertical ti-sm text-muted"></i>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-end" aria-labelledby="totalEarning">
+                      {% for action  in client.get_profile_completion_actions  %}
+                      <a class="dropdown-item" href="{% url "client_update" client.uuid %}">{{action}}</a>
+                      {% endfor %}
+                      {% comment %} <a class="dropdown-item" href="javascript:void(0);">call client</a> {% endcomment %}
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <h1 class="mb-0 me-2">{{client.calculate_data_completion_percentage2}}%</h1>
+                    <i class="ti ti-chevron-up text-success me-1"></i>
+                    <p class="text-success mb-0">{{client.percentage_needs}}%</p>
+                  </div>
+                  <div id="totalEarningChart"></div>
+                  <div class="d-flex align-items-start my-4">
+                    <div class="badge rounded bg-label-primary p-2 me-3 rounded">
+                      <i class="ti ti-chart-pie-2 ti-sm"></i>
+                    </div>
+                    <div class="d-flex justify-content-between w-100 gap-2 align-items-center">
+                      <div class="me-2">
+                        <h6 class="mb-0"> {% if client.meeting_time %}{{client.meeting_time}}  {% else %} waiting meeting T{% endif %} </h6>
+                        <small class="text-muted">
+                          {% if client.location %}
+                            {{client.location}}
+                            {% else %} 
+                            waiting to add ..                         
+                          {% endif %}
+                          {{client.location}}</small>
+                      </div>
+                      <a href={{client.locationLink}}><p class="mb-0 text-success">
+                      {% if client.locationLink  %}
+                      Location
+                      {% else %}
+                      waiting to add ..
+                      {% endif %} </p></a>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-start">
+                    <div class="badge rounded bg-label-primary p-2 me-3 rounded">
+                      <i class="ti ti-phone ti-sm"></i>
+                    </div>
+                    <div class="d-flex justify-content-between w-100 gap-2 align-items-center">
+                      <div class="me-2">
+                        <h6 class="mb-0">Phone</h6>
+                        <small class="text-muted">{{client.number}}</small>
+                      </div>
+                      <a href="tel:{{client.number}}"><p class="mb-0 text-success">call</p></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% comment %} end list item {% endcomment %}
+          </div>
+        
+        <!-- / Content -->
+
+   
+      </div>
+{% endblock content %}
