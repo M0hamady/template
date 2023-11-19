@@ -67,7 +67,7 @@
                           {% endif %}
                           {{client.location}}</small>
                       </div>
-                      <a href={{client.locationLink}}><p class="mb-0 text-success">
+                      <a  {% if client.locationLink %}  href={{client.locationLink}} {% endif %}  ><p class="mb-0 text-success">
                       {% if client.locationLink  %}
                       Location
                       {% else %}
