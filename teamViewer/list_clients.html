@@ -25,7 +25,7 @@
             <div class="col-12 col-xl-4 mb-4 col-md-6">
               <div class="card">
                 <div class="card-header d-flex justify-content-between pb-1">
-                  <h5 class="mb-0 card-title">{{client.name}}</h5>
+                  <h5 class="mb-0 card-title"><a href="{% url "client_project_update" client.uuid %}">{{client.name}}</a></h5>
                   <div class="dropdown">
                     <button
                     class="btn p-0"

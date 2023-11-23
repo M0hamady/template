@@ -1,0 +1,15 @@
+    <div class="mb-4 d-flex w-px-300 flex-wrap " id="parent-div">
+        {% for color in project.design_colors.all %}
+        <div class="position-relative" >
+            <input class="ml-4 btn  rounded-circle bg-danger p-0 text-danger "  style="position: absolute;width: 20px !important; height:20px !important;"
+             hx-post="{% url "delete_color" project.uuid  color.id%}"
+            hx-trigger="click"
+            id="coloe{{color}}"
+            placeholder="x"
+            hx-target="#parent-div"
+            hx-swap="outerHTML"  name="color_delete"  
+            value="{{color.id}}" />
+            <span class="badge w-px-75 h-px-75 rounded-circle text-center d-flex justify-content-center align-content-center align-items-center" style="background:{{color.name}}">{{color}}</span>
+        </div>
+        {% endfor %}
+    </div>

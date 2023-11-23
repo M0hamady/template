@@ -1,0 +1,243 @@
+{% extends 'baseViewer.html' %}
+{% load static %}
+{% block content %}
+{% load widget_tweaks %}
+
+<div class="content-wrapper">
+    <!-- Content -->
+    
+    <div class=" flex-grow-1 container-p-y card m-4 ">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h5 class="mb-0">Project data</h5>
+            <small class="text-muted float-end">{{client}}</small>
+        </div>
+        {% if error_message %}
+    <div class="alert alert-danger" role="alert">
+        {{ error_message }}
+    </div>
+{% endif %}
+        <div class="card-body">
+                <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Viewer /</span></h4>
+                <form method="POST" action="{% url 'client_project_update' project.uuid %}" autocomplete="off">
+                    {% csrf_token %}
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Project:</label>
+                      <div class="col-sm-4">
+                        {{ form.project.errors }}
+                        {{ form.project }}
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Location:</label>
+                      <div class="col-sm-4">
+                        {{ form.location.errors }}
+                        <input type="text" name="location" value={{project.location}} class="form-control" placeholder="{{ form.location.label }}">
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Dimensions:</label>
+                      <div class="col-sm-4">
+                        {{ form.dimensions.errors }}
+                        <input type="text" name="dimensions" class="form-control" value={{project.dimensions}} placeholder="{{ form.dimensions.label }}">
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Meters:</label>
+                      <div class="col-sm-4">
+                        {{ form.meters.errors }}
+                        <input type="number" value={{project.meters}} name="meters" class="form-control" placeholder="{{ form.meters.label }}">
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Design Styles:</label>
+                      <div class="col-sm-4">
+                        {{ form.design_styles.errors }}
+                        {% include 'teamViewer/team_partials/designe_style/list_designe.html' with designs=form.design_styles project=project %}
+                        {% render_field form.design_styles type='text' class="form-control" placeholder=field.name %}
+                    </div>
+                    <tags style="border-bottom: 1px solid black"  id="tag1" class="d-flex flex-wrap justify-content-between  rounded-0  border-bottom-1 align-items-lg-center col-sm-4" readonly="" tabindex="-1">
+                        {% for design in project.design_styles.all  %}
+                        <input title="Tag1" contenteditable="false" spellcheck="false" tabindex="-1"
+                            hx-post="{% url "delete_design" project.uuid %}"
+                            hx-trigger="click"
+                            hx-target="#tag1"
+                            hx-swap="outerHTML"  name="design"  
+                            value="{{design.id}}" 
+                            class="bg-warning p-2 m-2 rounded text-white position-relative cursor-pointer">
+                            <x title="" 
+                            style="   right: -4px;top: -4px;width: 15px;text-align: center; height: 15px;position: absolute;" class="bg-danger d-flex align-items-center rounded justify-content-center m-auto p-2">x</x><div><span class="">{{design}}</span></div></input>
+                        {% endfor %}
+                    </tags>
+                    </div>
+                  
+                    <div class="row mb-3" id="form_colors">
+                      
+                        {% include 'teamViewer/team_partials/colors/form_colors.html' with colors=project.design_colors.all %}
+                    </div> 
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Ceiling Decoration:</label>
+                      <div class="col-sm-4">
+                        {{ form.ceiling_decoration.errors }}
+                        {% render_field form.ceiling_decoration type='text' class="form-control" placeholder=field.name %}
+                        {% comment %} {{ form.ceiling_decoration }} {% endcomment %}
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Lighting Type:</label>
+                      <div class="col-sm-4">
+                        {{ form.lighting_type.errors }}
+                        {% render_field form.lighting_type type='text' class="form-control" placeholder=field.name %}
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Wall Decorations:</label>
+                      <div class="col-sm-4">
+                        {{ form.wall_decorations.errors }}
+                        {% render_field form.wall_decorations type='text' class="form-control" placeholder=field.name %}
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Flooring Material:</label>
+                      <div class="col-sm-4">
+                        {{ form.flooring_material.errors }}
+                        {% render_field form.flooring_material type='text' class="form-control" placeholder=field.name %}
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Furniture:</label>
+                      <div class="col-sm-4">
+                        {{ form.furniture.errors }}
+                        {% render_field form.furniture type='text' class="form-control" placeholder=field.name %}
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">High Window:</label>
+                      <div class="col-sm-4">
+                        {{ form.hight_window.errors }}
+                        <input type="text" value={{project.hight_window}} name="hight_window" class="form-control" placeholder="{{ form.hight_window.label }}">
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Client Open to Make Edit:</label>
+                      <div class="col-sm-4">
+                        {{ form.clientOpenToMakeEdit.errors }}
+                        {% render_field form.clientOpenToMakeEdit type='text' class="form-control" placeholder=field.name %}
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Plumbing Established:</label>
+                      <div class="col-sm-4">
+                        {{ form.plumbingEstablished.errors }}
+                        {% render_field form.plumbingEstablished type='text' class="form-control" placeholder=field.name %}
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Ceiling Gypsum Board:</label>
+                      <div class="col-sm-4">
+                        {{ form.ceilingGypsumBoard.errors }}
+                        {% render_field form.ceilingGypsumBoard type='text' class="form-control" placeholder=field.name %}
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Door Provided:</label>
+                      <div class="col-sm-4">
+                        {{ form.doorProvided.errors }}
+                        {% render_field form.doorProvided type='text' class="form-control" placeholder=field.name %}
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Ceramic Existed:</label>
+                      <div class="col-sm-4">
+                        {{ form.ceramicExisted.errors }}
+                        {% render_field form.ceramicExisted type='text' class="form-control" placeholder=field.name %}
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Toilet Type:</label>
+                      <div class="col-sm-4">
+                        {{ form.toiletType.errors }}
+                        {% render_field form.toiletType type='text' class="form-control" placeholder=field.name %}
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Heater:</label>
+                      <div class="col-sm-4">
+                        {{ form.heater.errors }}
+                        {% render_field form.heater type='text' class="form-control" placeholder=field.name %}
+                      </div>
+                    </div>
+                  
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Is Additional Furniture 2D:</label>
+                        <div class="col-sm-4">
+                          {{ form.is_add_fur_2d.errors }}
+                          <input type="checkbox"  value="{{project.is_add_fur_2d}}"   name="is_add_fur_2d" {% if form.is_add_fur_2d.value %}checked{% endif %}>
+                        </div>
+                      </div>
+                  
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Is Boiler:</label>
+                        <div class="col-sm-4">
+                          {{ form.is_boiler.errors }}
+                          <input type="checkbox" name="is_boiler" value="{{project.is_boiler}}" {% if project.is_boiler %}value="true" checked{% endif %} >
+                        </div>
+                      </div>
+                  
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Count Boiler:</label>
+                      <div class="col-sm-4">
+                        {{ form.count_boiler.errors }}
+                        <input type="number" value={{project.count_boiler}} name="count_boiler" class="form-control" placeholder="{{ form.count_boiler.label }}">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Count Boiler:</label>
+                      <div class="col-sm-4">
+                        {{ form.count_kids.errors }}
+                        <input type="number" value={{project.count_kids}} name="count_kids" class="form-control" placeholder="{{ form.count_kids.label }}">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Count kids male:</label>
+                      <div class="col-sm-4">
+                        {{ form.count_kids_male.errors }}
+                        <input type="number" value={{project.count_kids_male}} name="count_kids_male" class="form-control" placeholder="{{ form.count_kids_male.label }}">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Count kids female:</label>
+                      <div class="col-sm-4">
+                        {{ form.count_kids_female.errors }}
+                        <input type="number" value={{project.count_kids_female}} name="count_kids_female" class="form-control" placeholder="{{ form.count_kids_female.label }}">
+                      </div>
+                    </div>
+                  
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+                  {% comment %} end list item {% endcomment %}
+          </div>
+         
+        <!-- / Content -->
+
+   
+      </div>
+{% endblock content %}

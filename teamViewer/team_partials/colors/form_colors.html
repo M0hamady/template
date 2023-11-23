@@ -1,0 +1,14 @@
+
+<label class="col-sm-2 col-form-label">Design Colors:</label>
+<div class="col-md-4">
+<input class="form-control"  hx-post="{% url "add_color" project.uuid %}"
+hx-trigger="click changed"
+hx-target="#parent-div"
+hx-swap="outerHTML"  name="color__add"  type="color" value="#666EE8" id="color_ID"/>
+</div>
+
+<div class="col-md-4" id="colors">
+
+    {% include 'teamViewer/team_partials/colors/list_colors.html' with colors=project.design_colors.all %}
+
+</div>
