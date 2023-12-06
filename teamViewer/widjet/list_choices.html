@@ -1,0 +1,35 @@
+{% load helper_tags %}
+{% comment %} 
+1- list_object coming from form
+-tag name to use in update
+-project tags name
+
+{% endcomment %}
+<div>
+  <div class="dropdown">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+    {{btn_name}} 
+    </button>
+    <ul class="dropdown-menu">
+      {% for object in list_object %}
+      <li>
+        {% with obj_str=object|to_str %} 
+        
+        <a class="dropdown-item"
+          hx-post="{{url_name_add}}{{project.uuid}}/{{obj_str}}/"
+          hx-trigger="click" 
+           hx-target="#{{tag}}"  hx-swap="outerHTML" name="style__add">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something" checked>
+            <label class="form-check-label">{{ obj_str }}</label>
+          </div>
+        </a>
+        {% endwith %}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div>
+    {% include "teamViewer/widjet/list_obtions.html" with list_options=list_options tag=tag %}
+  </div>
+</div>

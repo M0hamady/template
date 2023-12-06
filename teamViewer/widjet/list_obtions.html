@@ -1,0 +1,16 @@
+<div style="border-bottom: 1px solid black "  id="{{tag}}" class="d-flex justify-content-between  rounded-0  border-bottom-1 align-items-lg-center col-sm-12" readonly="" tabindex="-1">
+    
+    {% for wall_decorarion in list_options  %}
+    <tag title="{{tag}}" contenteditable="false" spellcheck="false" tabindex="-1"
+        
+        class="btn btn-warning mt-2 waves-effect waves-light mx1">
+        <div title="" 
+        hx-post="{{url_name_delete}}{{project.uuid}}/{{wall_decorarion.id}}/"
+        hx-trigger="click"
+        hx-target="#{{tag}}"
+        hx-swap="outerHTML"  name="ceiling"  
+        value="{{wall_decorarion.id}}" 
+        style="   right: -4px;top: -4px;width: 23px;text-align: center; height: 23px; position: absolute;" class="bg-danger d-flex  align-items-center rounded justify-content-center m-auto p-2">
+        x </div>{{wall_decorarion}} </tag>
+    {% endfor %}
+</div>

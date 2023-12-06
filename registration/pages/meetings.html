@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static helper_tags  %}
 {% block content %}
+{% projects_manager as  manager_projects %}
     <div class="content-wrapper">
         <!-- Content -->
 
@@ -46,29 +47,29 @@
           <div class="card-body row">
             <div class="col-12 col-sm-4 col-md-12 col-lg-4">
               <div class="mt-lg-4 mt-lg-2 mb-lg-4 mb-2 pt-1">
-                <h1 class="mb-0">150</h1>
+                <h1 class="mb-0">{{manager_projects.projects|length}}</h1>
                 <p class="mb-0">اجمالي المشاريع</p>
               </div>
               <ul class="p-0 m-0">
                 <li class="d-flex gap-3 align-items-center mb-lg-3 pt-2 pb-1">
                   <div class="badge rounded bg-label-primary p-1"><i class="ti ti-ticket ti-sm"></i></div>
                   <div>
-                    <h6 class="mb-0 text-nowrap">المشاريع المنتهية</h6>
-                    <small class="text-muted">130</small>
+                    <h6 class="mb-0 text-nowrap">المشاريع القائمة</h6>
+                    <small class="text-muted">{{manager_projects.current_projects.count}}</small>
                   </div>
                 </li>
                 <li class="d-flex gap-3 align-items-center mb-lg-3 pb-1">
                   <div class="badge rounded bg-label-info p-1"><i class="ti ti-circle-check ti-sm"></i></div>
                   <div>
-                    <h6 class="mb-0 text-nowrap">مراحل المشاريع </h6>
-                    <small class="text-muted">1500</small>
+                    <h6 class="mb-0 text-nowrap">مشاريع منتظرة </h6>
+                    <small class="text-muted">{{manager_projects.going_to_start|length}}</small>
                   </div>
                 </li>
                 <li class="d-flex gap-3 align-items-center pb-1">
                   <div class="badge rounded bg-label-warning p-1"><i class="ti ti-clock ti-sm"></i></div>
                   <div>
-                    <h6 class="mb-0 text-nowrap">مراحل الاسبوع</h6>
-                    <small class="text-muted">12</small>
+                    <h6 class="mb-0 text-nowrap">مشاريع اقتربت علي الانتهاء</h6>
+                    <small class="text-muted">{{manager_projects.going_to_finish|length}}</small>
                   </div>
                 </li>
               </ul>
@@ -80,8 +81,13 @@
         </div>
       </div>
         <!-- / Content -->
+<div id="projectChart"></div>   
+<div id="clientChart"></div>   
+<div id="clientChart_locations"></div>   
+<div id="compnay_timeline"></div>   
+
               <!-- Timeline Left-->
-              <div class="col-xl-6 mb-4 mb-xl-0">
+              {% comment %} <div class="col-xl-6 mb-4 mb-xl-0">
                 <div class="card">
                   <h5 class="card-header">Basic</h5>
                   <div class="card-body pb-0">
@@ -270,12 +276,16 @@
                     </ul>
                   </div>
                 </div>
-              </div>
+              </div> {% endcomment %}
               <!-- /Timeline Left-->
 <script>
+  var managerProjects = {{ manager_projects.projects|length }};
     
+  function get_perc(num) {
+      return parseInt((num / managerProjects) * 100);
+  }
     var options = {
-        series: [100, 80, 80, 10],
+        series: [get_perc(managerProjects), get_perc({{manager_projects.going_to_finish|length}}), get_perc({{manager_projects.going_to_start|length}}), get_perc({{manager_projects.current_projects.count}})],
         chart: {
         height: 250,
         type: 'radialBar',
@@ -302,7 +312,7 @@
         }
       },
       colors: ['#1ab7ea', '#0084ff', '#39539E', '#ff9f43'],
-      labels: ['المشاريع', 'مشايع انتهت', 'مراحل المشاريع', 'هذا الاسبوع'],
+      labels: ['المشاريع', 'اقتربت علي انتهت', 'منتظرة', 'قائمة'],
       legend: {
         show: false,
         floating: true,
@@ -336,6 +346,319 @@
       var chart = new ApexCharts(document.querySelector("#supportTracker"), options);
       chart.render();
 </script>
-   
+<script>
+  // Hardcoded project data
+  var projectData = {
+    projects: [
+      {
+        id: 1,
+        name: "Project 1",
+        isFinished: false
+      },
+      {
+        id: 2,
+        name: "Project 2",
+        isFinished: true
+      },
+      // Add more project objects as needed
+    ],
+    finishedProjects: [
+      {
+        id: 2,
+        name: "Project 2",
+        isFinished: true
+      },
+      // Add more finished project objects as needed
+    ],
+    currentProjects: [
+      {
+        id: 1,
+        name: "Project 1",
+        isFinished: false
+      },
+      // Add more current project objects as needed
+    ],
+    goingToFinish: [
+      {
+        id: 3,
+        name: "Project 3",
+        isFinished: false
+      },
+      // Add more projects going to finish objects as needed
+    ],
+    goingToStart: [
+      {
+        id: 4,
+        name: "Project 4",
+        isFinished: false
+      },
+      // Add more projects going to start objects as needed
+    ],
+  };
+
+  // Prepare the data for the chart
+  var chartData = [
+    projectData.projects.length,
+    projectData.finishedProjects.length,
+    projectData.currentProjects.length,
+    projectData.goingToFinish.length,
+    projectData.goingToStart.length
+  ];
+
+  // Configure the chart options
+  var options = {
+    series: [{
+      name: 'Projects',
+      data: chartData
+    }],
+    chart: {
+      type: 'bar',
+      height: 250
+    },
+    xaxis: {
+      categories: ['All Projects', 'Finished Projects', 'Current Projects', 'Projects Going to Finish', 'Projects Going to Start'],
+      labels: {
+        rotate: -45
+      }
+    },
+    yaxis: {
+      title: {
+        text: 'Number of Projects'
+      }
+    }
+  };
+
+  // Render the chart
+  var chart = new ApexCharts(document.querySelector("#projectChart"), options);
+  chart.render();
+</script>
+<script>
+  // Prepare the data for the chart
+  {% comment %} console.log(managerProjects_data,"managerProjects") {% endcomment %}
+  var clientData = {
+    projects: [
+      {% for project in manager_projects.projects %}
+      {
+        id: {{ project.id }},
+        name: "{{ project.name }}",
+        createdDate: "{{ project.client.created_date|date:'Y-m' }}",
+        isFinished: "{{ project.is_finished }}".toString().toLowerCase()
+      },
+      {% endfor %}
+    ]
+  };
+  console.log(55555555555)
+  
+  console.log(clientData, 5555555555);
+  // Define the month names
+  var monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
+  // Perform analysis on created dates
+  var analysisData = {};
+  
+  clientData.projects.forEach(function(project) {
+    var month = project.createdDate;
+    var monthName = monthNames[parseInt(month.split('-')[1]) - 1];
+    if (analysisData.hasOwnProperty(monthName)) {
+      analysisData[monthName]++;
+    } else {
+      analysisData[monthName] = 1;
+    }
+  });
+
+  // Prepare the data for the chart
+  var months = Object.keys(analysisData);
+  var projectCountData = months.map(function(month) {
+    return analysisData[month];
+  });
+
+  // Configure the chart options
+  var options = {
+    series: [
+      {
+        name: 'Projects',
+        data: projectCountData
+      }
+    ],
+    chart: {
+      type: 'bar',
+      height: 250
+    },
+    xaxis: {
+      categories: months,
+      labels: {
+        rotate: -45
+      }
+    },
+    yaxis: {
+      title: {
+        text: 'Projects in year'
+      }
+    }
+  };
+
+  // Render the chart
+  var chart = new ApexCharts(document.querySelector("#clientChart"), options);
+  chart.render();
+</script>
+<script>
+  // Prepare the data for the chart
+  var clientData = {
+    projects: [
+      {% for project in manager_projects.projects %}
+      {
+        id: {{ project.id }},
+        name: "{{ project.name }}",
+        location: "{{ project.client.location }}"
+      },
+      {% endfor %}
+    ]
+  };
+
+  // Perform analysis on client locations
+  var analysisData = {};
+  
+  clientData.projects.forEach(function(project) {
+    var location = project.location;
+    if (analysisData.hasOwnProperty(location)) {
+      analysisData[location]++;
+    } else {
+      analysisData[location] = 1;
+    }
+  });
+
+  // Prepare the data for the chart
+  var locations = Object.keys(analysisData);
+  var projectCountData = locations.map(function(location) {
+    return analysisData[location];
+  });
+
+  // Configure the chart options
+  var options = {
+    series: [
+      {
+        name: 'Projects',
+        data: projectCountData
+      }
+    ],
+    chart: {
+      type: 'bar',
+      height: 250
+    },
+    xaxis: {
+      categories: locations,
+      labels: {
+        rotate: -45
+      }
+    },
+    yaxis: {
+      title: {
+        text: 'Projects by Location'
+      }
+    }
+  };
+
+  // Render the chart
+  var chart = new ApexCharts(document.querySelector("#clientChart_locations"), options);
+  chart.render();
+
+  // Display the project count for each location
+  locations.forEach(function(location, index) {
+    var projectCount = projectCountData[index];
+  });
+</script>
+
+<script>
+  // Prepare the data for the chart
+  var projects = [
+    {% for project in manager_projects.projects %}
+    {
+      name: "{{ project.name }} - {{project.client.location}}",
+      roadmap: {{ project.roadmap|safe }}
+    },
+    {% endfor %}
+  ];
+  console.log(projects, "from timeline");
+
+  // Prepare the data for the timeline chart
+  var timelineData = [];
+
+  projects.forEach(function (project) {
+    var projectName = project.name;
+    var roadmap = project.roadmap;
+
+    if (roadmap && roadmap.length > 0) { // Check if roadmap is not empty
+      roadmap.forEach(function (step) {
+        var stepName = step.floor_name;
+        var startDate = new Date(step.start_date);
+        var endDate = new Date(step.end_date);
+
+        timelineData.push({
+          x: projectName,
+          y: [startDate.getTime(), endDate.getTime()],
+          z: stepName,
+          fillColor: step.color
+        });
+      });
+    }
+  });
+
+  // Configure the chart options
+  var options = {
+    series: [
+      {
+        data: timelineData
+      }
+    ],
+    chart: {
+      height: 350,
+      type: 'rangeBar'
+    },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+        distributed: true,
+        dataLabels: {
+          hideOverflowingLabels: false
+        }
+      }
+    },
+    dataLabels: {
+      enabled: true,
+      formatter: function (val, opts) {
+        var projectName = opts.w.globals.labels[opts.dataPointIndex];
+        var startDate = new Date(val[0]);
+        var endDate = new Date(val[1]);
+        var diff = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+        return projectName + ': ' + diff + (diff > 1 ? ' days' : ' day');
+      },
+      style: {
+        colors: ['#f3f4f5', '#fff']
+      }
+    },
+    xaxis: {
+      type: 'datetime'
+    },
+    yaxis: {
+      show: false
+    },
+    grid: {
+      row: {
+        colors: ['#f3f4f5', '#fff'],
+        opacity: 1
+      }
+    },
+    title: {
+      text: 'Timeline - ' + 'Company' // Assuming the floor name is the same for all projects and steps
+    }
+  };
+
+  // Render the chart
+  var chart = new ApexCharts(document.querySelector("#compnay_timeline"), options);
+  chart.render();
+</script>
       </div>
 {% endblock content %}

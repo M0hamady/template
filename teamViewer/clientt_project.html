@@ -1,5 +1,5 @@
 {% extends 'baseViewer.html' %}
-{% load static %}
+{% load static helper_tags %}
 {% block content %}
 {% load widget_tweaks %}
 
@@ -16,227 +16,302 @@
         {{ error_message }}
     </div>
 {% endif %}
+
         <div class="card-body">
                 <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Viewer /</span></h4>
                 <form method="POST" action="{% url 'client_project_update' project.uuid %}" autocomplete="off">
                     {% csrf_token %}
+                    <h5>Advance Styling</h5>
+  <div class="row pt-3 mb-3">
+    <!-- Accordion with Icon -->
+    <div class="col-md mb-4 mb-md-2">
+      <small class="text-light fw-semibold">؛قختثؤف :{{project.project}}</small>
+      <div class="accordion mt-3 " id="accordionWithIcon">
+        <div class="card accordion-item active ">
+          <h2 class="accordion-header d-flex align-items-center ">
+            <button
+              type="button"
+              class="accordion-button"
+              data-bs-toggle="collapse"
+              data-bs-target="#accordionWithIcon-1"
+              aria-expanded="true"
+            >
+              <i class="ti ti-star ti-xs me-2"></i>
+              معلومات اساسية  
+            </button>
+          </h2>
+
+          <div id="accordionWithIcon-1" class="accordion-collapse collapse show">
+            <div class="accordion-body red-tag">
+              <div class="row mb-3 pt-3">
+                <label class="col-sm-4 col-form-label">Location:</label>
+                <div class="col-sm-12">
+                  {{ form.location.errors }}
+                  <input type="text" name="location" value={{project.location}} class="form-control" placeholder="{{ form.location.label }}">
+                </div>
+              </div>
+            
+              <div class="row pt-3 mb-3">
+                <label class="col-sm-4 col-form-label">Dimensions:</label>
+                <div class="col-sm-12">
+                  {{ form.dimensions.errors }}
+                  <input type="text" name="dimensions" class="form-control" value={{project.dimensions}} placeholder="{{ form.dimensions.label }}">
+                </div>
+              </div>
+            
+              <div class="row pt-3 mb-3">
+                <label class="col-sm-4 col-form-label">Meters:</label>
+                <div class="col-sm-12">
+                  {{ form.meters.errors }}
+                  <input type="number" value={{project.meters}} name="meters" class="form-control" placeholder="{{ form.meters.label }}">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item card">
+          <h2 class="accordion-header d-flex align-items-center">
+            <button
+              type="button"
+              class="accordion-button collapsed"
+              data-bs-toggle="collapse"
+              data-bs-target="#accordionWithIcon-2"
+              aria-expanded="false"
+            >
+              <i class="me-2 ti ti-sun ti-xs"></i>
+              تصميم المشروع
+            </button>
+          </h2>
+          <div id="accordionWithIcon-2" class="accordion-collapse collapse">
+            <div class="accordion-body red-tag">
+              <div class="row pt-3 mb-3">
+                <label class="col-sm-4 col-form-label">Design Styles:</label>
+                <div class="col-sm-12">
+                  {% include 'teamViewer/widjet/list_choices.html' with url_name_add='/client/style/update/' url_name_delete="/client/design/delete/" list_object=form.design_styles btn_name="Designe Style" tag="tag1" list_options=project.design_styles.all project=project %}
+                    
+              </div>
+              
+              </div>
+            
+              <div class="row mb-3" id="form_colors">
+                
+                  {% include 'teamViewer/team_partials/colors/form_colors.html' with colors=project.design_colors.all %}
+              </div> 
+            
+              <div class="row pt-3 mb-3">
+                <label class="col-sm-4 col-form-label">Ceiling Decoration:</label>
+                <div class="col-sm-12">
+                  {{ form.ceiling_decoration.errors }}
+                  {% include 'teamViewer/widjet/list_choices.html' with url_name_add='/client/ceiling/update/' url_name_delete="/client/ceiling/delete/" list_object=form.ceiling_decoration btn_name="Ceiling Decoration" tag="tag2" list_options=project.ceiling_decoration.all project=project %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item card">
+          <h2 class="accordion-header d-flex align-items-center">
+            <button
+              type="button"
+              class="accordion-button collapsed"
+              data-bs-toggle="collapse"
+              data-bs-target="#accordionWithIcon-3"
+              aria-expanded="false"
+            >
+              <i class="me-2 ti ti-moon ti-xs"></i>
+              مواد المشروع
+            </button>
+          </h2>
+          <div id="accordionWithIcon-3" class="accordion-collapse collapse">
+            <div class="accordion-body red-tag">
+              <div class="row pt-3 mb-3">
+                <label class="col-sm-4 col-form-label">Lighting Type:</label>
+                <div class="col-sm-12">
+                  {{ form.lighting_type.errors }}
+                  {% include 'teamViewer/widjet/list_choices.html' with url_name_add='/client/light_type/update/' url_name_delete="/client/light_type/delete/" list_object=form.lighting_type btn_name="Lighting Type" tag="tag3" list_options=project.lighting_type.all project=project %}
+                </div>
+              </div>
+            
+              <div class="row pt-3 mb-3">
+                <label class="col-sm-4 col-form-label">Wall Decorations:</label>
+                <div class="col-sm-12">
+                  {{ form.wall_decorations.errors }}
+                  {% include 'teamViewer/widjet/list_choices.html' with url_name_add='/client/wall_decoration/update/' url_name_delete="/client/wall_decoration/delete/" list_object=form.wall_decorations btn_name="wall_decorations" tag="tag4" list_options=project.wall_decorations.all project=project %}
+                </div>
+              </div>
+            
+              <div class="row pt-3 mb-3">
+                <label class="col-sm-4 col-form-label">Flooring Material:</label>
+                <div class="col-sm-12">
+                  {{ form.flooring_material.errors }}
                   
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Project:</label>
-                      <div class="col-sm-4">
-                        {{ form.project.errors }}
-                        {{ form.project }}
-                      </div>
-                    </div>
-                  
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Location:</label>
-                      <div class="col-sm-4">
-                        {{ form.location.errors }}
-                        <input type="text" name="location" value={{project.location}} class="form-control" placeholder="{{ form.location.label }}">
-                      </div>
-                    </div>
-                  
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Dimensions:</label>
-                      <div class="col-sm-4">
-                        {{ form.dimensions.errors }}
-                        <input type="text" name="dimensions" class="form-control" value={{project.dimensions}} placeholder="{{ form.dimensions.label }}">
-                      </div>
-                    </div>
-                  
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Meters:</label>
-                      <div class="col-sm-4">
-                        {{ form.meters.errors }}
-                        <input type="number" value={{project.meters}} name="meters" class="form-control" placeholder="{{ form.meters.label }}">
-                      </div>
-                    </div>
-                  
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Design Styles:</label>
-                      <div class="col-sm-4">
-                        {{ form.design_styles.errors }}
-                        {% include 'teamViewer/team_partials/designe_style/list_designe.html' with designs=form.design_styles project=project %}
-                        {% render_field form.design_styles type='text' class="form-control" placeholder=field.name %}
-                    </div>
-                    <tags style="border-bottom: 1px solid black"  id="tag1" class="d-flex flex-wrap justify-content-between  rounded-0  border-bottom-1 align-items-lg-center col-sm-4" readonly="" tabindex="-1">
-                        {% for design in project.design_styles.all  %}
-                        <input title="Tag1" contenteditable="false" spellcheck="false" tabindex="-1"
-                            hx-post="{% url "delete_design" project.uuid %}"
-                            hx-trigger="click"
-                            hx-target="#tag1"
-                            hx-swap="outerHTML"  name="design"  
-                            value="{{design.id}}" 
-                            class="bg-warning p-2 m-2 rounded text-white position-relative cursor-pointer">
-                            <x title="" 
-                            style="   right: -4px;top: -4px;width: 15px;text-align: center; height: 15px;position: absolute;" class="bg-danger d-flex align-items-center rounded justify-content-center m-auto p-2">x</x><div><span class="">{{design}}</span></div></input>
-                        {% endfor %}
-                    </tags>
-                    </div>
-                  
-                    <div class="row mb-3" id="form_colors">
-                      
-                        {% include 'teamViewer/team_partials/colors/form_colors.html' with colors=project.design_colors.all %}
-                    </div> 
-                  
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Ceiling Decoration:</label>
-                      <div class="col-sm-4">
-                        {{ form.ceiling_decoration.errors }}
-                        {% render_field form.ceiling_decoration type='text' class="form-control" placeholder=field.name %}
-                        {% comment %} {{ form.ceiling_decoration }} {% endcomment %}
-                      </div>
-                    </div>
-                  
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Lighting Type:</label>
-                      <div class="col-sm-4">
-                        {{ form.lighting_type.errors }}
-                        {% render_field form.lighting_type type='text' class="form-control" placeholder=field.name %}
-                      </div>
-                    </div>
-                  
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Wall Decorations:</label>
-                      <div class="col-sm-4">
-                        {{ form.wall_decorations.errors }}
-                        {% render_field form.wall_decorations type='text' class="form-control" placeholder=field.name %}
-                      </div>
-                    </div>
-                  
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Flooring Material:</label>
-                      <div class="col-sm-4">
-                        {{ form.flooring_material.errors }}
-                        {% render_field form.flooring_material type='text' class="form-control" placeholder=field.name %}
-                      </div>
-                    </div>
-                  
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Furniture:</label>
-                      <div class="col-sm-4">
-                        {{ form.furniture.errors }}
-                        {% render_field form.furniture type='text' class="form-control" placeholder=field.name %}
-                      </div>
-                    </div>
-                  
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">High Window:</label>
-                      <div class="col-sm-4">
+                  {% include 'teamViewer/widjet/list_choices.html' with url_name_add='/client/flooring/update/' url_name_delete="/client/flooring/delete/" list_object=form.flooring_material btn_name="flooring_material" tag="tag5" list_options=project.flooring_material.all project=project %}
+
+                </div>
+              <div class="row pt-3 mb-3">
+                  <label class="col-sm-4 col-form-label">Flooring Material:</label>
+                  <div class="col-sm-12">
+                    {{ form.flooring_material.errors }}
+                    
+                    {% include 'teamViewer/widjet/list_choices.html' with url_name_add='/client/furniture/update/' url_name_delete="/client/furniture/delete/" list_object=form.furniture btn_name="furniture details" tag="tag6" list_options=project.furniture.all project=project %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/ Accordion with Icon -->
+    <!-- Accordion Border styling -->
+    <div class="col-md">
+      <small class="text-light fw-semibold">Accordion With Border</small>
+      <div class="accordion mt-3 accordion-bordered" id="accordionStyle1">
+        <div class="accordion-item card">
+          <h2 class="accordion-header">
+            <button
+              type="button"
+              class="accordion-button collapsed"
+              data-bs-toggle="collapse"
+              data-bs-target="#accordionStyle1-1"
+              aria-expanded="false"
+            >
+              بينات المشروع
+            </button>
+          </h2>
+
+          <div id="accordionStyle1-1" class="accordion-collapse collapse" data-bs-parent="#accordionStyle1">
+            <div class="accordion-body red-tag">
+              <div class="row pt-3 mb-3">
+                      <label class="col-sm-4 col-form-label">High Window:</label>
+                      <div class="col-sm-12">
                         {{ form.hight_window.errors }}
                         <input type="text" value={{project.hight_window}} name="hight_window" class="form-control" placeholder="{{ form.hight_window.label }}">
                       </div>
                     </div>
                   
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Client Open to Make Edit:</label>
-                      <div class="col-sm-4">
+                    <div class="row pt-3 mb-3">
+                      <label class="col-sm-4 col-form-label">Client Open to Make Edit:</label>
+                      <div class="col-sm-12">
                         {{ form.clientOpenToMakeEdit.errors }}
                         {% render_field form.clientOpenToMakeEdit type='text' class="form-control" placeholder=field.name %}
                       </div>
                     </div>
                   
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Plumbing Established:</label>
-                      <div class="col-sm-4">
+                    <div class="row pt-3 mb-3">
+                      <label class="col-sm-4 col-form-label">Plumbing Established:</label>
+                      <div class="col-sm-12">
                         {{ form.plumbingEstablished.errors }}
                         {% render_field form.plumbingEstablished type='text' class="form-control" placeholder=field.name %}
                       </div>
                     </div>
                   
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Ceiling Gypsum Board:</label>
-                      <div class="col-sm-4">
+                    <div class="row pt-3 mb-3">
+                      <label class="col-sm-4 col-form-label">Ceiling Gypsum Board:</label>
+                      <div class="col-sm-12">
                         {{ form.ceilingGypsumBoard.errors }}
                         {% render_field form.ceilingGypsumBoard type='text' class="form-control" placeholder=field.name %}
                       </div>
                     </div>
                   
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Door Provided:</label>
-                      <div class="col-sm-4">
+                    <div class="row pt-3 mb-3">
+                      <label class="col-sm-4 col-form-label">Door Provided:</label>
+                      <div class="col-sm-12">
                         {{ form.doorProvided.errors }}
                         {% render_field form.doorProvided type='text' class="form-control" placeholder=field.name %}
                       </div>
                     </div>
                   
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Ceramic Existed:</label>
-                      <div class="col-sm-4">
+                    <div class="row pt-3 mb-3">
+                      <label class="col-sm-4 col-form-label">Ceramic Existed:</label>
+                      <div class="col-sm-12">
                         {{ form.ceramicExisted.errors }}
                         {% render_field form.ceramicExisted type='text' class="form-control" placeholder=field.name %}
                       </div>
                     </div>
                   
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Toilet Type:</label>
-                      <div class="col-sm-4">
+                    <div class="row pt-3 mb-3">
+                      <label class="col-sm-4 col-form-label">Toilet Type:</label>
+                      <div class="col-sm-12">
                         {{ form.toiletType.errors }}
                         {% render_field form.toiletType type='text' class="form-control" placeholder=field.name %}
                       </div>
                     </div>
                   
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Heater:</label>
-                      <div class="col-sm-4">
+                    <div class="row pt-3 mb-3">
+                      <label class="col-sm-4 col-form-label">Heater:</label>
+                      <div class="col-sm-12">
                         {{ form.heater.errors }}
                         {% render_field form.heater type='text' class="form-control" placeholder=field.name %}
                       </div>
                     </div>
-                  
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label">Is Additional Furniture 2D:</label>
-                        <div class="col-sm-4">
-                          {{ form.is_add_fur_2d.errors }}
-                          <input type="checkbox"  value="{{project.is_add_fur_2d}}"   name="is_add_fur_2d" {% if form.is_add_fur_2d.value %}checked{% endif %}>
-                        </div>
-                      </div>
-                  
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label">Is Boiler:</label>
-                        <div class="col-sm-4">
-                          {{ form.is_boiler.errors }}
-                          <input type="checkbox" name="is_boiler" value="{{project.is_boiler}}" {% if project.is_boiler %}value="true" checked{% endif %} >
-                        </div>
-                      </div>
-                  
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Count Boiler:</label>
-                      <div class="col-sm-4">
-                        {{ form.count_boiler.errors }}
-                        <input type="number" value={{project.count_boiler}} name="count_boiler" class="form-control" placeholder="{{ form.count_boiler.label }}">
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Count Boiler:</label>
-                      <div class="col-sm-4">
-                        {{ form.count_kids.errors }}
-                        <input type="number" value={{project.count_kids}} name="count_kids" class="form-control" placeholder="{{ form.count_kids.label }}">
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Count kids male:</label>
-                      <div class="col-sm-4">
-                        {{ form.count_kids_male.errors }}
-                        <input type="number" value={{project.count_kids_male}} name="count_kids_male" class="form-control" placeholder="{{ form.count_kids_male.label }}">
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label">Count kids female:</label>
-                      <div class="col-sm-4">
-                        {{ form.count_kids_female.errors }}
-                        <input type="number" value={{project.count_kids_female}} name="count_kids_female" class="form-control" placeholder="{{ form.count_kids_female.label }}">
-                      </div>
-                    </div>
-                  
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
             </div>
-                  {% comment %} end list item {% endcomment %}
           </div>
-         
-        <!-- / Content -->
+        </div>
+
+      
+
+        <div class="card accordion-item active">
+          <h2 class="accordion-header">
+            <button
+              type="button"
+              class="accordion-button"
+              data-bs-toggle="collapse"
+              data-bs-target="#accordionStyle1-3"
+              aria-expanded="true"
+            >
+              ارقام عن المشروع
+            </button>
+          </h2>
+          <div
+            id="accordionStyle1-3"
+            class="accordion-collapse collapse show"
+            data-bs-parent="#accordionStyle1"
+          >
+            <div class="accordion-body blue-tag">
+              <div class="row pt-3 mb-3">
+                <label class="col-sm-4 col-form-label">Count Boiler:</label>
+                <div class="col-sm-12">
+                  {{ form.count_boiler.errors }}
+                  <input type="number" value={{project.count_boiler}} name="count_boiler" class="form-control" placeholder="{{ form.count_boiler.label }}">
+                </div>
+              </div>
+              <div class="row pt-3 mb-3">
+                <label class="col-sm-4 col-form-label">Count Boiler:</label>
+                <div class="col-sm-12">
+                  {{ form.count_kids.errors }}
+                  <input type="number" value={{project.count_kids}} name="count_kids" class="form-control" placeholder="{{ form.count_kids.label }}">
+                </div>
+              </div>
+              <div class="row pt-3 mb-3">
+                <label class="col-sm-4 col-form-label">Count kids male:</label>
+                <div class="col-sm-12">
+                  {{ form.count_kids_male.errors }}
+                  <input type="number" value={{project.count_kids_male}} name="count_kids_male" class="form-control" placeholder="{{ form.count_kids_male.label }}">
+                </div>
+              </div>
+              <div class="row pt-3 mb-3">
+                <label class="col-sm-4 col-form-label">Count kids female:</label>
+                <div class="col-sm-12">
+                  {{ form.count_kids_female.errors }}
+                  <input type="number" value={{project.count_kids_female}} name="count_kids_female" class="form-control" placeholder="{{ form.count_kids_female.label }}">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/ Accordion Border styling -->
+  </div>
+            
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+
+<!-- / Content -->
+{% include "teamViewer/widjet/show_files.html" %}
 
    
       </div>

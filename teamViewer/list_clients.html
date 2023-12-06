@@ -71,7 +71,7 @@
                       {% if client.locationLink  %}
                       Location
                       {% else %}
-                      waiting to add ..
+                      waiting location
                       {% endif %} </p></a>
                     </div>
                   </div>
@@ -85,6 +85,7 @@
                         <small class="text-muted">{{client.number}}</small>
                       </div>
                       <a href="tel:{{client.number}}"><p class="mb-0 text-success">call</p></a>
+                      <a href="https://wa.me/{{client.whatsapp_num}}?text={{client.generate_welcome_message}}"><p class="mb-0 text-success">send access</p></a>
                     </div>
                   </div>
                 </div>
