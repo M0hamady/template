@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>SC Verivecations </title>
+{% endblock %}
+
+{% block icon %} <link rel="icon" href="{% static 'assets/img/illustrations/lock.png'%}"  type="image/png">{% endblock %}
+{% block content %}
+<div class="authentication-wrapper authentication-cover authentication-bg">
+  <div class="authentication-inner row">
+    <!-- Left Text -->
+    <div class="d-none d-lg-flex col-lg-7 p-0">
+      <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
+        <img
+          src="{% static 'assets/img/illustrations/auth-verify-email-illustration-light.png' %}"
+          alt="auth-verify-email-cover"
+          class="img-fluid my-5 auth-illustration w-px-500"
+          style="margin-left: 40vw"
+          data-app-light-img="illustrations/auth-verify-email-illustration-light.png"
+          data-app-dark-img="illustrations/auth-verify-email-illustration-dark.png"
+        />
+
+        
+      </div>
+    </div>
+    <!-- /Left Text -->
+
+    <!-- Verify email -->
+    <div class="d-flex col-12 col-lg-5 align-items-center p-4 p-sm-5 text-end">
+      <div class="w-px-400 mx-auto">
+        <div class="app-brand mb-4">
+          <a href="index.html" class="app-brand-link gap-2">
+            <span class="app-brand-logo demo h-px-50 max-w-[165px]">
+              <img src="{% static 'assets/img/cmopnay/company.png' %}" class="img-fluid" alt="">
+            </span>
+          </a>
+        </div>
+        <h3 class="mb-1 fw-bold">نسخ التصريح الخاص بك  ✉️</h3>
+        <p class="text-end mb-4 text-right">
+          سوف يتم نسخ الترخيص الخاصة بك بمجرد الضغط على الزر التالي.
+          تأكد من عدم مشاركته مع أحد.
+          قم باستخدامه للدخول إلى لوحة التحكم الخاصة بك.
+        </p>
+        <button class="btn btn-primary w-100 mb-3" id="myButton" onclick="copyValue('{{ uuid }}')">Copy Value</button>
+      </div>
+    </div>
+    <!-- /Verify email -->
+  </div>
+</div>
+<script>
+  function copyValue(uuid) {
+    navigator.clipboard.writeText(uuid);
+    var alertBox = document.createElement("div");
+    alertBox.setAttribute("class", "alert alert-success text-right");
+    alertBox.setAttribute("role", "alert");
+    alertBox.innerHTML = "تم نسخ تصريح الدخول الخاص بك!";
+    document.body.appendChild(alertBox);
+    setTimeout(function() {
+      document.body.removeChild(alertBox);
+    }, 3000);
+  }
+</script>
+{% endblock %}
