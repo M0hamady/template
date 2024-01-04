@@ -278,7 +278,7 @@
                 </div>
               </div>
               <div class="row pt-3 mb-3">
-                <label class="col-sm-4 col-form-label">Count Boiler:</label>
+                <label class="col-sm-4 col-form-label">Count Kids:</label>
                 <div class="col-sm-12">
                   {{ form.count_kids.errors }}
                   <input type="number" value={{project.count_kids}} name="count_kids" class="form-control" placeholder="{{ form.count_kids.label }}">
@@ -296,6 +296,13 @@
                 <div class="col-sm-12">
                   {{ form.count_kids_female.errors }}
                   <input type="number" value={{project.count_kids_female}} name="count_kids_female" class="form-control" placeholder="{{ form.count_kids_female.label }}">
+                </div>
+              </div>
+              <div class="row pt-3 mb-3">
+                <label class="col-sm-4 col-form-label">Count Rooms:</label>
+                <div class="col-sm-12">
+                  {{ form.count_rooms.errors }}
+                  <input type="number" value={{project.count_rooms}} name="count_rooms" class="form-control" placeholder="{{ form.count_rooms.label }}">
                 </div>
               </div>
             </div>

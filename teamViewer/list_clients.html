@@ -38,6 +38,8 @@
                     <i class="ti ti-dots-vertical ti-sm text-muted"></i>
                   </button>
                   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="totalEarning">
+                    <a class="dropdown-item" href="{% url "create_project_study_teamViewer" client.uuid %}">عمل مقايسة</a>
+
                       {% for action  in client.get_profile_completion_actions  %}
                       <a class="dropdown-item" href="{% url "client_update" client.uuid %}">{{action}}</a>
                       {% endfor %}
