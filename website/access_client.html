@@ -57,7 +57,13 @@
     document.body.appendChild(alertBox);
     setTimeout(function() {
       document.body.removeChild(alertBox);
-    }, 3000);
+      alertBox.setAttribute("class", "alert alert-success text-right");
+      alertBox.setAttribute("role", "alert");
+      alertBox.innerHTML = "سوف يتم اعادة توجيهك للدخول لصفحة التحكم!";
+      document.body.appendChild(alertBox);
+      window.location.href = "https://support-constructions.com/login";
+
+    }, 2000);
   }
 </script>
 {% endblock %}
