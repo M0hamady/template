@@ -39,6 +39,7 @@
                   </button>
                   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="totalEarning">
                     <a class="dropdown-item" href="{% url "create_project_study_teamViewer" client.uuid %}">عمل مقايسة</a>
+                    <a class="dropdown-item" href="{% url "monitor_images" client.uuid %}">رفع الصور</a>
 
                       {% for action  in client.get_profile_completion_actions  %}
                       <a class="dropdown-item" href="{% url "client_update" client.uuid %}">{{action}}</a>

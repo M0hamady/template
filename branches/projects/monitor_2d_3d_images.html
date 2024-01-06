@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>SC {{ client }} </title>
+{% endblock %}
+
+{% block icon %} <link rel="icon" href="{% static 'assets/img/illustrations/lock.png'%}"  type="image/png">{% endblock %}
+
+
+{% block content %}
+  <div class="container">
+    <h1>Images for Project {{ project_uuid }}</h1>
+    <hr>
+    <div class="d-flex flex-row gap-2 flex-wrap justify-content-evenly">
+      {% for image, comments, comment_replies in images %}
+      <div class="card mb-4 shadow-sm" style="width:380px;">
+        <img src="{{ image.image.url }}" class="card-img-top" alt="{{ image.name }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ image.name }}</h5>
+          <p class="card-text">{{ image.description }}</p>
+        </div>
+        <ul class="list-group list-group-flush " >
+          {% for comment in comments %}
+            <li class="list-group-item" >
+              <div class="d-flex justify-content-between align-items-center" >
+                <div>
+                  <strong>{{ comment.text }}</strong>
+                  <br>
+                  <small class="text-muted">{{ comment.created_at }}</small>
+                </div>
+              </div>
+              <form method="post">
+                {% csrf_token %}
+                <input type='text' name="text" class="form-control m-1"/>
+                <input type="hidden" name="comment_uuid" value="{{ comment.uuid }}">
+                <button type="submit" class="btn btn-primary">Reply</button>
+              </form>
+              {% for reply in comment.replies.all %}
+                <div class="ml-4">
+                  <strong>{{ reply.text }}</strong>
+                  <br>
+                  <small class="text-muted">{{ reply.created_at }}</small>
+                </div>
+              {% endfor %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+    
+    </div>
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Add New Image</h5>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">Name</label>
+            {{ form.name|add_class:'form-control' }}
+            {% if form.name.errors %}
+              <div class="invalid-feedback">
+                {% for error in form.name.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+          <div class="form-group">
+            <label for="{{ form.image.id_for_label }}">Image</label>
+            {{ form.image|add_class:'form-control' }}
+            {% if form.image.errors %}
+              <div class="invalid-feedback">
+                {% for error in form.image.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+          <div class="form-group form-check">
+            {{ form.can_client_sea|add_class:'form-check-input' }}
+            <label class="form-check-label" for="{{ form.can_client_sea.id_for_label }}">Can client see?</label>
+          </div>
+          <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
